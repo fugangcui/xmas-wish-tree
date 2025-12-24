@@ -1,5 +1,6 @@
 /**
  * 许愿圣诞树 - 主逻辑
+ * Christmas Wishing Tree - Main Logic
  */
 
 class ChristmasTree {
@@ -8,25 +9,6 @@ class ChristmasTree {
         this.isLit = false;
         this.isMusicPlaying = false;
         this.selectedColor = '#e74c3c';
-        
-        // 默认祝福语列表
-        this.defaultWishes = [
-            '愿新的一年健康平安，万事顺遂 🌟',
-            '祝家人朋友幸福快乐，心想事成 ❤️',
-            '愿2026年事业有成，财源广进 💰',
-            '希望世界和平，人人幸福 🌍',
-            '愿所爱之人都能平安喜乐 🎄',
-            '新的一年要更加努力，实现梦想 ✨',
-            '祝自己和家人身体健康 💪',
-            '愿友情长存，爱情甜蜜 💕',
-            '希望能遇见更好的自己 🌈',
-            '愿所有的美好都如期而至 🎁',
-            '祝学业进步，考试顺利 📚',
-            '愿工作顺利，升职加薪 🚀',
-            '希望能去更多地方旅行 ✈️',
-            '愿每一天都充满阳光和希望 ☀️',
-            '祝福所有人圣诞快乐，新年快乐 🎅',
-        ];
         
         // 装饰球可放置的位置（相对于容器）
         this.ornamentPositions = [
@@ -181,8 +163,9 @@ class ChristmasTree {
         const input = document.getElementById('wishInput');
         const charCount = document.getElementById('charCount');
         
-        // 随机选择一条默认祝福语
-        const randomWish = this.defaultWishes[Math.floor(Math.random() * this.defaultWishes.length)];
+        // 从 i18n 获取随机默认祝福语
+        const defaultWishes = typeof i18n !== 'undefined' ? i18n.getDefaultWishes() : ['Merry Christmas! 🎄'];
+        const randomWish = defaultWishes[Math.floor(Math.random() * defaultWishes.length)];
         input.value = randomWish;
         charCount.textContent = randomWish.length;
         
@@ -212,7 +195,8 @@ class ChristmasTree {
         const availablePosition = this.ornamentPositions.find(p => !p.used);
         
         if (!availablePosition) {
-            alert('圣诞树上已经挂满了愿望呢！🎄');
+            const msg = typeof i18n !== 'undefined' ? i18n.t('treeFull') : 'The tree is full of wishes! 🎄';
+            alert(msg);
             return;
         }
         
@@ -315,13 +299,15 @@ class ChristmasTree {
     
     // 点亮圣诞树
     lightUpTree() {
+        const btnText = document.getElementById('lightBtn').querySelector('[data-i18n="btnLight"]');
+        
         if (this.isLit) {
             // 已经亮了，再点一次关闭
             this.isLit = false;
             localStorage.setItem('treeLit', 'false');
             document.querySelector('.tree').classList.remove('lit');
             this.turnOffAllLights();
-            document.getElementById('lightBtn').querySelector('span:last-child').textContent = '点亮圣诞树';
+            btnText.textContent = typeof i18n !== 'undefined' ? i18n.t('btnLight') : 'Light Up Tree';
             return;
         }
         
@@ -346,7 +332,7 @@ class ChristmasTree {
         setTimeout(() => {
             tree.classList.remove('lighting');
             tree.classList.add('lit');
-            document.getElementById('lightBtn').querySelector('span:last-child').textContent = '熄灭彩灯';
+            btnText.textContent = typeof i18n !== 'undefined' ? i18n.t('btnLightOff') : 'Turn Off Lights';
             
             // 放烟花庆祝
             if (typeof fireworks !== 'undefined') {
@@ -360,7 +346,8 @@ class ChristmasTree {
         document.querySelectorAll('.light').forEach(light => {
             light.classList.add('on');
         });
-        document.getElementById('lightBtn').querySelector('span:last-child').textContent = '熄灭彩灯';
+        const btnText = document.getElementById('lightBtn').querySelector('[data-i18n="btnLight"]');
+        btnText.textContent = typeof i18n !== 'undefined' ? i18n.t('btnLightOff') : 'Turn Off Lights';
     }
     
     // 关闭所有灯
@@ -408,21 +395,11 @@ class ChristmasTree {
         }
     }
     
-    // 更新祝福语
+    // 更新祝福语（现在由 i18n 处理）
     updateBlessingMessage() {
-        const blessings = [
-            '愿你的每一个愿望都能实现 🌟',
-            '圣诞快乐，新年幸福 🎄',
-            '愿温暖与爱陪伴你度过每一天 ❤️',
-            '愿你拥有一个美好的圣诞节 🎅',
-            '愿幸福如雪花般落满你的窗台 ❄️',
-            '愿新的一年充满希望与惊喜 ✨',
-            '平安夜，愿平安与你同在 🕯️',
-            '愿圣诞的钟声带给你好运 🔔'
-        ];
-        
-        const blessing = blessings[Math.floor(Math.random() * blessings.length)];
-        document.getElementById('blessing').textContent = blessing;
+        if (typeof i18n !== 'undefined') {
+            i18n.updateBlessing();
+        }
     }
 }
 
