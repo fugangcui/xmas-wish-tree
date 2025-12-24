@@ -1,6 +1,6 @@
 /**
- * 烟花效果
- * 使用 Canvas 绘制烟花粒子
+ * Fireworks Effect
+ * Canvas-based fireworks particle animation
  */
 
 class FireworksEffect {
@@ -11,6 +11,7 @@ class FireworksEffect {
         this.rockets = [];
         this.isAnimating = false;
         
+        // Firework colors
         this.colors = [
             '#ff4444', '#ffdd44', '#44ff88', '#44aaff', 
             '#ff44aa', '#ffaa44', '#aa44ff', '#ffffff'
@@ -21,16 +22,25 @@ class FireworksEffect {
         window.addEventListener('resize', () => this.resize());
     }
     
+    /**
+     * Initialize canvas
+     */
     init() {
         this.resize();
     }
     
+    /**
+     * Resize canvas to match window size
+     */
     resize() {
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
     }
     
-    // 发射烟花
+    /**
+     * Launch multiple fireworks
+     * @param {number} count - Number of fireworks to launch
+     */
     launch(count = 5) {
         for (let i = 0; i < count; i++) {
             setTimeout(() => {
@@ -44,6 +54,9 @@ class FireworksEffect {
         }
     }
     
+    /**
+     * Create a single rocket
+     */
     createRocket() {
         const x = Math.random() * this.canvas.width * 0.6 + this.canvas.width * 0.2;
         const targetY = Math.random() * this.canvas.height * 0.3 + this.canvas.height * 0.1;
@@ -58,9 +71,16 @@ class FireworksEffect {
         });
     }
     
+    /**
+     * Create explosion particles at position
+     * @param {number} x - X coordinate
+     * @param {number} y - Y coordinate
+     * @param {string} color - Explosion color
+     */
     explode(x, y, color) {
         const particleCount = 80 + Math.floor(Math.random() * 40);
         
+        // Main explosion particles
         for (let i = 0; i < particleCount; i++) {
             const angle = (Math.PI * 2 / particleCount) * i;
             const speed = 2 + Math.random() * 4;
@@ -77,7 +97,7 @@ class FireworksEffect {
             });
         }
         
-        // 添加一些闪光点
+        // Add sparkle effects
         for (let i = 0; i < 20; i++) {
             const angle = Math.random() * Math.PI * 2;
             const speed = 1 + Math.random() * 2;
@@ -95,12 +115,15 @@ class FireworksEffect {
         }
     }
     
+    /**
+     * Update rockets and particles
+     */
     update() {
-        // 更新火箭
+        // Update rockets
         for (let i = this.rockets.length - 1; i >= 0; i--) {
             const rocket = this.rockets[i];
             
-            // 保存轨迹
+            // Save trail positions
             rocket.trail.push({ x: rocket.x, y: rocket.y });
             if (rocket.trail.length > 10) {
                 rocket.trail.shift();
@@ -108,21 +131,21 @@ class FireworksEffect {
             
             rocket.y -= rocket.speed;
             
-            // 到达目标高度时爆炸
+            // Explode when reaching target height
             if (rocket.y <= rocket.targetY) {
                 this.explode(rocket.x, rocket.y, rocket.color);
                 this.rockets.splice(i, 1);
             }
         }
         
-        // 更新粒子
+        // Update particles
         for (let i = this.particles.length - 1; i >= 0; i--) {
             const p = this.particles[i];
             
             p.x += p.vx;
             p.y += p.vy;
-            p.vy += 0.05; // 重力
-            p.vx *= 0.99; // 空气阻力
+            p.vy += 0.05; // Gravity
+            p.vx *= 0.99; // Air resistance
             p.vy *= 0.99;
             p.alpha -= p.decay;
             
@@ -131,18 +154,21 @@ class FireworksEffect {
             }
         }
         
-        // 如果没有粒子和火箭，停止动画
+        // Stop animation if nothing to render
         if (this.particles.length === 0 && this.rockets.length === 0) {
             this.isAnimating = false;
         }
     }
     
+    /**
+     * Draw rockets and particles
+     */
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         
-        // 绘制火箭轨迹
+        // Draw rocket trails
         this.rockets.forEach(rocket => {
-            // 轨迹
+            // Trail
             rocket.trail.forEach((point, index) => {
                 const alpha = index / rocket.trail.length * 0.5;
                 this.ctx.beginPath();
@@ -151,14 +177,14 @@ class FireworksEffect {
                 this.ctx.fill();
             });
             
-            // 火箭头
+            // Rocket head
             this.ctx.beginPath();
             this.ctx.arc(rocket.x, rocket.y, 3, 0, Math.PI * 2);
             this.ctx.fillStyle = rocket.color;
             this.ctx.fill();
         });
         
-        // 绘制粒子
+        // Draw particles
         this.particles.forEach(p => {
             this.ctx.beginPath();
             this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
@@ -169,6 +195,9 @@ class FireworksEffect {
         });
     }
     
+    /**
+     * Animation loop
+     */
     animate() {
         if (!this.isAnimating) return;
         
@@ -178,10 +207,9 @@ class FireworksEffect {
     }
 }
 
-// 创建全局烟花实例
+// Create global fireworks instance
 let fireworks;
 
 document.addEventListener('DOMContentLoaded', () => {
     fireworks = new FireworksEffect();
 });
-

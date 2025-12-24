@@ -3,60 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎄 Christmas Wishing Tree - Merry Christmas!</title>
+    
+    <!-- SEO Meta Tags -->
+    <title>🎄 Christmas Wishing Tree - Make Your Holiday Wishes Come True</title>
+    <meta name="description" content="Create your magical Christmas wishes on our interactive wishing tree. Light up the tree, watch fireworks, and celebrate the holiday season with beautiful animations and festive music.">
+    <meta name="keywords" content="Christmas, Wishing Tree, Holiday Wishes, Merry Christmas, Christmas Eve, New Year Wishes, Interactive Christmas, Christmas Tree, Holiday Celebration">
+    <meta name="author" content="thebesttools.net">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://xmas.thebesttools.net/">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://xmas.thebesttools.net/">
+    <meta property="og:title" content="🎄 Christmas Wishing Tree - Make Your Holiday Wishes Come True">
+    <meta property="og:description" content="Create your magical Christmas wishes on our interactive wishing tree. Light up the tree, watch fireworks, and celebrate the holiday season!">
+    <meta property="og:image" content="https://xmas.thebesttools.net/og-image.png">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="zh_CN">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://xmas.thebesttools.net/">
+    <meta name="twitter:title" content="🎄 Christmas Wishing Tree - Make Your Holiday Wishes Come True">
+    <meta name="twitter:description" content="Create your magical Christmas wishes on our interactive wishing tree. Light up the tree, watch fireworks, and celebrate the holiday season!">
+    <meta name="twitter:image" content="https://xmas.thebesttools.net/og-image.png">
+    
+    <!-- Additional SEO Meta -->
+    <meta name="theme-color" content="#1a1a3e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Christmas Tree">
+    
+    <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎄</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎄</text></svg>">
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Structured Data / JSON-LD -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Christmas Wishing Tree",
+        "description": "An interactive Christmas wishing tree where you can make holiday wishes, light up the tree, and enjoy festive celebrations.",
+        "url": "https://xmas.thebesttools.net/",
+        "applicationCategory": "Entertainment",
+        "operatingSystem": "All",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "author": {
+            "@type": "Organization",
+            "name": "thebesttools.net",
+            "url": "https://thebesttools.net"
+        },
+        "datePublished": "2024-12-24",
+        "inLanguage": ["en", "zh-CN"]
+    }
+    </script>
 </head>
 <body>
-    <!-- 雪花画布 -->
-    <canvas id="snowCanvas"></canvas>
+    <!-- Snow Canvas -->
+    <canvas id="snowCanvas" aria-hidden="true"></canvas>
     
-    <!-- 烟花画布 -->
-    <canvas id="fireworksCanvas"></canvas>
+    <!-- Fireworks Canvas -->
+    <canvas id="fireworksCanvas" aria-hidden="true"></canvas>
 
-    <!-- 语言切换 -->
+    <!-- Language Switch -->
     <div class="lang-switch">
-        <button class="lang-btn" id="langBtn" title="Switch Language">
+        <button class="lang-btn" id="langBtn" title="Switch Language" aria-label="Switch Language">
             <span id="langIcon">🌐</span>
             <span id="langText">EN</span>
         </button>
     </div>
 
-    <!-- 主容器 -->
+    <!-- Main Container -->
     <div class="container">
-        <!-- 标题 -->
+        <!-- Header -->
         <header class="header">
             <h1>🎄 Merry Christmas! 🎄</h1>
             <p class="subtitle" data-i18n="subtitle">Write your wishes and hang them on the tree</p>
         </header>
 
-        <!-- 圣诞树区域 -->
-        <div class="tree-section">
-            <!-- 树顶星星 -->
-            <div class="star">★</div>
+        <!-- Christmas Tree Section -->
+        <main class="tree-section" role="main">
+            <!-- Tree Top Star -->
+            <div class="star" aria-label="Christmas Star">★</div>
             
-            <!-- 圣诞树 -->
-            <div class="tree">
+            <!-- Christmas Tree -->
+            <div class="tree" role="img" aria-label="Christmas Tree">
                 <div class="tree-layer tree-layer-1"></div>
                 <div class="tree-layer tree-layer-2"></div>
                 <div class="tree-layer tree-layer-3"></div>
                 <div class="tree-layer tree-layer-4"></div>
                 
-                <!-- 彩灯容器 -->
-                <div class="lights-container" id="lightsContainer"></div>
+                <!-- Lights Container -->
+                <div class="lights-container" id="lightsContainer" aria-hidden="true"></div>
                 
-                <!-- 装饰球容器（愿望） -->
-                <div class="ornaments-container" id="ornamentsContainer"></div>
+                <!-- Ornaments Container (Wishes) -->
+                <div class="ornaments-container" id="ornamentsContainer" aria-label="Wish Ornaments"></div>
             </div>
             
-            <!-- 树干 -->
-            <div class="trunk"></div>
+            <!-- Tree Trunk -->
+            <div class="trunk" aria-hidden="true"></div>
             
-            <!-- 礼物盒 -->
-            <div class="gifts">
+            <!-- Gift Boxes -->
+            <div class="gifts" aria-label="Christmas Gifts">
                 <div class="gift gift-1">
                     <div class="gift-ribbon"></div>
                     <div class="gift-bow"></div>
@@ -73,65 +136,67 @@
                     <div class="gift-bow-center"></div>
                 </div>
             </div>
-        </div>
+        </main>
 
-        <!-- 操作按钮 -->
-        <div class="actions">
+        <!-- Action Buttons -->
+        <nav class="actions" aria-label="Tree Actions">
             <button class="btn btn-wish" id="wishBtn">
-                <span class="btn-icon">✨</span>
+                <span class="btn-icon" aria-hidden="true">✨</span>
                 <span data-i18n="btnWish">Make a Wish</span>
             </button>
             <button class="btn btn-light" id="lightBtn">
-                <span class="btn-icon">💡</span>
+                <span class="btn-icon" aria-hidden="true">💡</span>
                 <span data-i18n="btnLight">Light Up Tree</span>
             </button>
             <button class="btn btn-firework" id="fireworkBtn">
-                <span class="btn-icon">🎆</span>
+                <span class="btn-icon" aria-hidden="true">🎆</span>
                 <span data-i18n="btnFirework">Fireworks</span>
             </button>
-        </div>
+        </nav>
 
-        <!-- 音乐控制 -->
+        <!-- Music Control -->
         <div class="music-control">
-            <button class="music-btn" id="musicBtn" title="Background Music">
-                <span class="music-icon" id="musicIcon">🔇</span>
+            <button class="music-btn" id="musicBtn" title="Background Music" aria-label="Toggle Background Music">
+                <span class="music-icon" id="musicIcon" aria-hidden="true">🔇</span>
                 <span class="music-text" data-i18n="music">Music</span>
             </button>
         </div>
 
-        <!-- 底部祝福语 -->
+        <!-- Footer with Blessings -->
         <footer class="footer">
             <p class="blessing" id="blessing">May all your wishes come true 🌟</p>
             <p class="copyright" data-i18n="copyright">Merry Christmas · Happy Holidays</p>
         </footer>
     </div>
 
-    <!-- 许愿弹窗 -->
-    <div class="modal" id="wishModal">
+    <!-- Wish Modal -->
+    <div class="modal" id="wishModal" role="dialog" aria-labelledby="modalTitle" aria-modal="true">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 data-i18n="modalTitle">✨ Write Your Wish</h2>
-                <button class="modal-close" id="modalClose">&times;</button>
+                <h2 id="modalTitle" data-i18n="modalTitle">✨ Write Your Wish</h2>
+                <button class="modal-close" id="modalClose" aria-label="Close Modal">&times;</button>
             </div>
             <div class="modal-body">
+                <label for="wishInput" class="sr-only">Your Christmas Wish</label>
                 <textarea 
                     class="wish-input" 
                     id="wishInput" 
                     data-i18n-placeholder="wishPlaceholder"
                     placeholder="Write your Christmas wish here..."
                     maxlength="100"
+                    aria-describedby="charCount"
                 ></textarea>
-                <div class="char-count"><span id="charCount">0</span>/100</div>
+                <div class="char-count" aria-live="polite"><span id="charCount">0</span>/100</div>
                 
                 <div class="color-picker">
-                    <p data-i18n="colorPicker">Choose ornament color:</p>
-                    <div class="color-options">
-                        <button class="color-option selected" data-color="#e74c3c" style="background: #e74c3c;" data-i18n-title="colorRed" title="Red"></button>
-                        <button class="color-option" data-color="#f39c12" style="background: #f39c12;" data-i18n-title="colorGold" title="Gold"></button>
-                        <button class="color-option" data-color="#3498db" style="background: #3498db;" data-i18n-title="colorBlue" title="Blue"></button>
-                        <button class="color-option" data-color="#c0c0c0" style="background: #c0c0c0;" data-i18n-title="colorSilver" title="Silver"></button>
-                        <button class="color-option" data-color="#9b59b6" style="background: #9b59b6;" data-i18n-title="colorPurple" title="Purple"></button>
-                        <button class="color-option" data-color="#2ecc71" style="background: #2ecc71;" data-i18n-title="colorGreen" title="Green"></button>
+                    <p id="colorPickerLabel" data-i18n="colorPicker">Choose ornament color:</p>
+                    <div class="color-options" role="radiogroup" aria-labelledby="colorPickerLabel">
+                        <button class="color-option selected" data-color="#e74c3c" style="background: #e74c3c;" data-i18n-title="colorRed" title="Red" role="radio" aria-checked="true"></button>
+                        <button class="color-option" data-color="#f39c12" style="background: #f39c12;" data-i18n-title="colorGold" title="Gold" role="radio" aria-checked="false"></button>
+                        <button class="color-option" data-color="#3498db" style="background: #3498db;" data-i18n-title="colorBlue" title="Blue" role="radio" aria-checked="false"></button>
+                        <button class="color-option" data-color="#c0c0c0" style="background: #c0c0c0;" data-i18n-title="colorSilver" title="Silver" role="radio" aria-checked="false"></button>
+                        <button class="color-option" data-color="#9b59b6" style="background: #9b59b6;" data-i18n-title="colorPurple" title="Purple" role="radio" aria-checked="false"></button>
+                        <button class="color-option" data-color="#2ecc71" style="background: #2ecc71;" data-i18n-title="colorGreen" title="Green" role="radio" aria-checked="false"></button>
                     </div>
                 </div>
             </div>
@@ -143,14 +208,15 @@
         </div>
     </div>
 
-    <!-- 愿望查看弹窗 -->
-    <div class="wish-tooltip" id="wishTooltip"></div>
+    <!-- Wish Tooltip -->
+    <div class="wish-tooltip" id="wishTooltip" role="tooltip" aria-hidden="true"></div>
 
-    <!-- 背景音乐 -->
+    <!-- Background Music -->
     <audio id="bgMusic" loop preload="auto">
         <source src="we_wish_you_a_merry_christmas.mp3" type="audio/mpeg">
     </audio>
 
+    <!-- Scripts -->
     <script src="snow.js"></script>
     <script src="fireworks.js"></script>
     <script src="i18n.js"></script>

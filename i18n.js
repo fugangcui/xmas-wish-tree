@@ -1,18 +1,19 @@
 /**
- * 多语言支持 - i18n
+ * Internationalization (i18n) Support
+ * Handles multilingual content for the Christmas Wishing Tree
  */
 
 const i18n = {
-    // 当前语言
+    // Current language
     currentLang: 'en',
     
-    // 语言包
+    // Language packs
     languages: {
         en: {
-            // 页面标题
-            pageTitle: '🎄 Christmas Wishing Tree - Merry Christmas!',
+            // Page title
+            pageTitle: '🎄 Christmas Wishing Tree - Make Your Holiday Wishes Come True',
             
-            // 主页面
+            // Main page
             subtitle: 'Write your wishes and hang them on the tree',
             btnWish: 'Make a Wish',
             btnLight: 'Light Up Tree',
@@ -21,13 +22,13 @@ const i18n = {
             music: 'Music',
             copyright: 'Merry Christmas · Happy Holidays',
             
-            // 弹窗
+            // Modal
             modalTitle: '✨ Write Your Wish',
             wishPlaceholder: 'Write your Christmas wish here...',
             colorPicker: 'Choose ornament color:',
             btnSubmit: '🎄 Hang on Tree',
             
-            // 颜色
+            // Colors
             colorRed: 'Red',
             colorGold: 'Gold',
             colorBlue: 'Blue',
@@ -35,10 +36,10 @@ const i18n = {
             colorPurple: 'Purple',
             colorGreen: 'Green',
             
-            // 提示
+            // Alerts
             treeFull: 'The tree is full of wishes! 🎄',
             
-            // 祝福语
+            // Blessing messages
             blessings: [
                 'May all your wishes come true 🌟',
                 'Merry Christmas and Happy New Year 🎄',
@@ -52,7 +53,7 @@ const i18n = {
                 'May good things come your way 🎁',
             ],
             
-            // 默认愿望
+            // Default wishes
             defaultWishes: [
                 'Wishing for health and happiness in the new year 🌟',
                 'May my family and friends be happy ❤️',
@@ -71,15 +72,15 @@ const i18n = {
                 'Merry Christmas to everyone! 🎅',
             ],
             
-            // 语言按钮
+            // Language button
             langText: 'EN',
         },
         
         zh: {
-            // 页面标题
-            pageTitle: '🎄 许愿圣诞树 - Merry Christmas!',
+            // Page title
+            pageTitle: '🎄 许愿圣诞树 - 让你的节日愿望成真',
             
-            // 主页面
+            // Main page
             subtitle: '写下你的愿望，挂在圣诞树上',
             btnWish: '许个愿望',
             btnLight: '点亮圣诞树',
@@ -88,13 +89,13 @@ const i18n = {
             music: '音乐',
             copyright: '平安夜快乐 · 圣诞节快乐',
             
-            // 弹窗
+            // Modal
             modalTitle: '✨ 写下你的愿望',
             wishPlaceholder: '在这里写下你的圣诞愿望...',
             colorPicker: '选择装饰球颜色：',
             btnSubmit: '🎄 挂上圣诞树',
             
-            // 颜色
+            // Colors
             colorRed: '红色',
             colorGold: '金色',
             colorBlue: '蓝色',
@@ -102,10 +103,10 @@ const i18n = {
             colorPurple: '紫色',
             colorGreen: '绿色',
             
-            // 提示
+            // Alerts
             treeFull: '圣诞树上已经挂满了愿望呢！🎄',
             
-            // 祝福语
+            // Blessing messages
             blessings: [
                 '愿你的每一个愿望都能实现 🌟',
                 '圣诞快乐，新年幸福 🎄',
@@ -117,7 +118,7 @@ const i18n = {
                 '愿圣诞的钟声带给你好运 🔔',
             ],
             
-            // 默认愿望
+            // Default wishes
             defaultWishes: [
                 '愿新的一年健康平安，万事顺遂 🌟',
                 '祝家人朋友幸福快乐，心想事成 ❤️',
@@ -136,19 +137,21 @@ const i18n = {
                 '祝福所有人圣诞快乐，新年快乐 🎅',
             ],
             
-            // 语言按钮
+            // Language button
             langText: '中文',
         }
     },
     
-    // 初始化
+    /**
+     * Initialize i18n system
+     */
     init() {
-        // 从 localStorage 读取语言设置，默认根据浏览器语言
+        // Load saved language from localStorage, or detect from browser
         const savedLang = localStorage.getItem('xmasLang');
         if (savedLang) {
             this.currentLang = savedLang;
         } else {
-            // 根据浏览器语言自动选择
+            // Auto-detect from browser language
             const browserLang = navigator.language || navigator.userLanguage;
             this.currentLang = browserLang.startsWith('zh') ? 'zh' : 'en';
         }
@@ -157,31 +160,40 @@ const i18n = {
         this.bindEvents();
     },
     
-    // 绑定事件
+    /**
+     * Bind language switch event
+     */
     bindEvents() {
         document.getElementById('langBtn').addEventListener('click', () => {
             this.toggleLanguage();
         });
     },
     
-    // 切换语言
+    /**
+     * Toggle between languages
+     */
     toggleLanguage() {
         this.currentLang = this.currentLang === 'en' ? 'zh' : 'en';
         localStorage.setItem('xmasLang', this.currentLang);
         this.applyLanguage();
+        
+        // Update HTML lang attribute for SEO
+        document.documentElement.lang = this.currentLang === 'zh' ? 'zh-CN' : 'en';
     },
     
-    // 应用语言
+    /**
+     * Apply current language to all elements
+     */
     applyLanguage() {
         const lang = this.languages[this.currentLang];
         
-        // 更新页面标题
+        // Update page title
         document.title = lang.pageTitle;
         
-        // 更新 HTML lang 属性
+        // Update HTML lang attribute
         document.documentElement.lang = this.currentLang === 'zh' ? 'zh-CN' : 'en';
         
-        // 更新所有带 data-i18n 属性的元素
+        // Update all elements with data-i18n attribute
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
             if (lang[key]) {
@@ -189,7 +201,7 @@ const i18n = {
             }
         });
         
-        // 更新 placeholder
+        // Update placeholders
         document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
             const key = el.getAttribute('data-i18n-placeholder');
             if (lang[key]) {
@@ -197,7 +209,7 @@ const i18n = {
             }
         });
         
-        // 更新 title 属性
+        // Update title attributes
         document.querySelectorAll('[data-i18n-title]').forEach(el => {
             const key = el.getAttribute('data-i18n-title');
             if (lang[key]) {
@@ -205,39 +217,50 @@ const i18n = {
             }
         });
         
-        // 更新语言按钮
+        // Update language button text
         document.getElementById('langText').textContent = lang.langText;
         
-        // 更新祝福语
+        // Update blessing message
         this.updateBlessing();
     },
     
-    // 更新祝福语
+    /**
+     * Update the footer blessing message
+     */
     updateBlessing() {
         const blessings = this.languages[this.currentLang].blessings;
         const blessing = blessings[Math.floor(Math.random() * blessings.length)];
         document.getElementById('blessing').textContent = blessing;
     },
     
-    // 获取翻译
+    /**
+     * Get translation by key
+     * @param {string} key - Translation key
+     * @returns {string} Translated text or key if not found
+     */
     t(key) {
         return this.languages[this.currentLang][key] || key;
     },
     
-    // 获取默认愿望列表
+    /**
+     * Get default wishes list for current language
+     * @returns {Array} Array of default wish strings
+     */
     getDefaultWishes() {
         return this.languages[this.currentLang].defaultWishes;
     },
     
-    // 获取随机祝福语
+    /**
+     * Get a random blessing message
+     * @returns {string} Random blessing message
+     */
     getRandomBlessing() {
         const blessings = this.languages[this.currentLang].blessings;
         return blessings[Math.floor(Math.random() * blessings.length)];
     }
 };
 
-// 页面加载后初始化
+// Initialize i18n on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
     i18n.init();
 });
-

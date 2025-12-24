@@ -1,6 +1,6 @@
 /**
- * 许愿圣诞树 - 主逻辑
- * Christmas Wishing Tree - Main Logic
+ * Christmas Wishing Tree - Main Application Logic
+ * An interactive Christmas tree where users can make wishes and celebrate
  */
 
 class ChristmasTree {
@@ -10,31 +10,31 @@ class ChristmasTree {
         this.isMusicPlaying = false;
         this.selectedColor = '#e74c3c';
         
-        // 装饰球可放置的位置（相对于容器）
+        // Ornament positions (relative to container)
         this.ornamentPositions = [
-            // 第一层
+            // Layer 1
             { x: 85, y: 45, used: false },
             { x: 115, y: 50, used: false },
             { x: 135, y: 45, used: false },
-            // 第二层
+            // Layer 2
             { x: 70, y: 85, used: false },
             { x: 100, y: 90, used: false },
             { x: 130, y: 85, used: false },
             { x: 150, y: 90, used: false },
-            // 第三层
+            // Layer 3
             { x: 55, y: 140, used: false },
             { x: 85, y: 145, used: false },
             { x: 115, y: 140, used: false },
             { x: 145, y: 145, used: false },
             { x: 165, y: 140, used: false },
-            // 第四层
+            // Layer 4
             { x: 40, y: 200, used: false },
             { x: 70, y: 205, used: false },
             { x: 100, y: 200, used: false },
             { x: 130, y: 205, used: false },
             { x: 160, y: 200, used: false },
             { x: 180, y: 205, used: false },
-            // 第五层
+            // Layer 5
             { x: 25, y: 260, used: false },
             { x: 55, y: 265, used: false },
             { x: 85, y: 260, used: false },
@@ -47,6 +47,9 @@ class ChristmasTree {
         this.init();
     }
     
+    /**
+     * Initialize the application
+     */
     init() {
         this.loadWishes();
         this.createLights();
@@ -54,7 +57,7 @@ class ChristmasTree {
         this.bindEvents();
         this.updateBlessingMessage();
         
-        // 检查是否之前已点亮
+        // Check if tree was previously lit
         if (localStorage.getItem('treeLit') === 'true') {
             this.isLit = true;
             document.querySelector('.tree').classList.add('lit');
@@ -62,24 +65,26 @@ class ChristmasTree {
         }
     }
     
-    // 创建彩灯
+    /**
+     * Create Christmas lights on the tree
+     */
     createLights() {
         const container = document.getElementById('lightsContainer');
         const lightColors = ['red', 'yellow', 'blue', 'green'];
         
-        // 彩灯位置
+        // Light positions
         const lightPositions = [
-            // 第一层
+            // Layer 1
             { x: 100, y: 30 }, { x: 120, y: 35 },
-            // 第二层
+            // Layer 2
             { x: 75, y: 70 }, { x: 95, y: 75 }, { x: 115, y: 70 }, { x: 135, y: 75 }, { x: 145, y: 70 },
-            // 第三层
+            // Layer 3
             { x: 55, y: 120 }, { x: 75, y: 125 }, { x: 95, y: 120 }, { x: 115, y: 125 },
             { x: 135, y: 120 }, { x: 155, y: 125 }, { x: 165, y: 120 },
-            // 第四层
+            // Layer 4
             { x: 35, y: 175 }, { x: 55, y: 180 }, { x: 75, y: 175 }, { x: 95, y: 180 },
             { x: 115, y: 175 }, { x: 135, y: 180 }, { x: 155, y: 175 }, { x: 175, y: 180 }, { x: 185, y: 175 },
-            // 第五层
+            // Layer 5
             { x: 20, y: 235 }, { x: 40, y: 240 }, { x: 60, y: 235 }, { x: 80, y: 240 },
             { x: 100, y: 235 }, { x: 120, y: 240 }, { x: 140, y: 235 }, { x: 160, y: 240 },
             { x: 180, y: 235 }, { x: 200, y: 240 },
@@ -95,62 +100,68 @@ class ChristmasTree {
         });
     }
     
-    // 绑定事件
+    /**
+     * Bind all event listeners
+     */
     bindEvents() {
-        // 许愿按钮
+        // Wish button
         document.getElementById('wishBtn').addEventListener('click', () => {
             this.openWishModal();
         });
         
-        // 点亮按钮
+        // Light up button
         document.getElementById('lightBtn').addEventListener('click', () => {
             this.lightUpTree();
         });
         
-        // 烟花按钮
+        // Fireworks button
         document.getElementById('fireworkBtn').addEventListener('click', () => {
             if (typeof fireworks !== 'undefined') {
                 fireworks.launch(8);
             }
         });
         
-        // 音乐控制
+        // Music control
         document.getElementById('musicBtn').addEventListener('click', () => {
             this.toggleMusic();
         });
         
-        // 关闭弹窗
+        // Close modal button
         document.getElementById('modalClose').addEventListener('click', () => {
             this.closeWishModal();
         });
         
-        // 点击弹窗外部关闭
+        // Close modal on backdrop click
         document.getElementById('wishModal').addEventListener('click', (e) => {
             if (e.target.id === 'wishModal') {
                 this.closeWishModal();
             }
         });
         
-        // 字数统计
+        // Character count
         document.getElementById('wishInput').addEventListener('input', (e) => {
             document.getElementById('charCount').textContent = e.target.value.length;
         });
         
-        // 颜色选择
+        // Color selection
         document.querySelectorAll('.color-option').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.color-option').forEach(b => b.classList.remove('selected'));
+                document.querySelectorAll('.color-option').forEach(b => {
+                    b.classList.remove('selected');
+                    b.setAttribute('aria-checked', 'false');
+                });
                 e.target.classList.add('selected');
+                e.target.setAttribute('aria-checked', 'true');
                 this.selectedColor = e.target.dataset.color;
             });
         });
         
-        // 提交愿望
+        // Submit wish
         document.getElementById('submitWish').addEventListener('click', () => {
             this.submitWish();
         });
         
-        // 键盘事件
+        // Keyboard events
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 this.closeWishModal();
@@ -158,12 +169,14 @@ class ChristmasTree {
         });
     }
     
-    // 打开许愿弹窗
+    /**
+     * Open the wish modal with a random default blessing
+     */
     openWishModal() {
         const input = document.getElementById('wishInput');
         const charCount = document.getElementById('charCount');
         
-        // 从 i18n 获取随机默认祝福语
+        // Get random default wish from i18n
         const defaultWishes = typeof i18n !== 'undefined' ? i18n.getDefaultWishes() : ['Merry Christmas! 🎄'];
         const randomWish = defaultWishes[Math.floor(Math.random() * defaultWishes.length)];
         input.value = randomWish;
@@ -171,17 +184,21 @@ class ChristmasTree {
         
         document.getElementById('wishModal').classList.add('show');
         input.focus();
-        input.select(); // 选中文字，方便用户直接修改
+        input.select(); // Select text for easy editing
     }
     
-    // 关闭许愿弹窗
+    /**
+     * Close the wish modal and reset input
+     */
     closeWishModal() {
         document.getElementById('wishModal').classList.remove('show');
         document.getElementById('wishInput').value = '';
         document.getElementById('charCount').textContent = '0';
     }
     
-    // 提交愿望
+    /**
+     * Submit a new wish and add it to the tree
+     */
     submitWish() {
         const input = document.getElementById('wishInput');
         const text = input.value.trim();
@@ -191,7 +208,7 @@ class ChristmasTree {
             return;
         }
         
-        // 找到可用位置
+        // Find available position
         const availablePosition = this.ornamentPositions.find(p => !p.used);
         
         if (!availablePosition) {
@@ -214,7 +231,7 @@ class ChristmasTree {
         this.renderOrnament(wish);
         this.closeWishModal();
         
-        // 小庆祝效果
+        // Celebration effect
         if (typeof fireworks !== 'undefined') {
             setTimeout(() => {
                 fireworks.launch(3);
@@ -222,7 +239,10 @@ class ChristmasTree {
         }
     }
     
-    // 渲染单个装饰球
+    /**
+     * Render a single ornament on the tree
+     * @param {Object} wish - The wish object to render
+     */
     renderOrnament(wish) {
         const container = document.getElementById('ornamentsContainer');
         
@@ -232,10 +252,15 @@ class ChristmasTree {
         ornament.style.left = `${wish.position.x}px`;
         ornament.style.top = `${wish.position.y}px`;
         ornament.dataset.wishId = wish.id;
+        ornament.setAttribute('role', 'button');
+        ornament.setAttribute('tabindex', '0');
+        ornament.setAttribute('aria-label', 'View wish');
         
-        // 鼠标/触摸事件显示愿望
+        // Mouse/touch events to show wish
         ornament.addEventListener('mouseenter', (e) => this.showWishTooltip(e, wish));
         ornament.addEventListener('mouseleave', () => this.hideWishTooltip());
+        ornament.addEventListener('focus', (e) => this.showWishTooltip(e, wish));
+        ornament.addEventListener('blur', () => this.hideWishTooltip());
         ornament.addEventListener('touchstart', (e) => {
             e.preventDefault();
             this.showWishTooltip(e, wish);
@@ -246,7 +271,7 @@ class ChristmasTree {
         
         container.appendChild(ornament);
         
-        // 添加出现动画
+        // Entrance animation
         ornament.style.transform = 'scale(0)';
         ornament.style.transition = 'transform 0.3s ease-out';
         setTimeout(() => {
@@ -254,11 +279,16 @@ class ChristmasTree {
         }, 50);
     }
     
-    // 显示愿望提示
+    /**
+     * Show wish tooltip
+     * @param {Event} event - The triggering event
+     * @param {Object} wish - The wish to display
+     */
     showWishTooltip(event, wish) {
         const tooltip = document.getElementById('wishTooltip');
         tooltip.textContent = wish.text;
         tooltip.classList.add('show');
+        tooltip.setAttribute('aria-hidden', 'false');
         
         const rect = event.target.getBoundingClientRect();
         const tooltipRect = tooltip.getBoundingClientRect();
@@ -266,7 +296,7 @@ class ChristmasTree {
         let left = rect.left + rect.width / 2 - tooltipRect.width / 2;
         let top = rect.top - tooltipRect.height - 10;
         
-        // 边界检查
+        // Boundary checks
         if (left < 10) left = 10;
         if (left + tooltipRect.width > window.innerWidth - 10) {
             left = window.innerWidth - tooltipRect.width - 10;
@@ -279,15 +309,21 @@ class ChristmasTree {
         tooltip.style.top = `${top}px`;
     }
     
-    // 隐藏愿望提示
+    /**
+     * Hide the wish tooltip
+     */
     hideWishTooltip() {
-        document.getElementById('wishTooltip').classList.remove('show');
+        const tooltip = document.getElementById('wishTooltip');
+        tooltip.classList.remove('show');
+        tooltip.setAttribute('aria-hidden', 'true');
     }
     
-    // 渲染所有愿望
+    /**
+     * Render all saved wishes
+     */
     renderWishes() {
         this.wishes.forEach(wish => {
-            // 标记位置为已使用
+            // Mark position as used
             const pos = this.ornamentPositions.find(
                 p => p.x === wish.position.x && p.y === wish.position.y
             );
@@ -297,12 +333,14 @@ class ChristmasTree {
         });
     }
     
-    // 点亮圣诞树
+    /**
+     * Light up the Christmas tree with animation
+     */
     lightUpTree() {
         const btnText = document.getElementById('lightBtn').querySelector('[data-i18n="btnLight"]');
         
         if (this.isLit) {
-            // 已经亮了，再点一次关闭
+            // Turn off lights
             this.isLit = false;
             localStorage.setItem('treeLit', 'false');
             document.querySelector('.tree').classList.remove('lit');
@@ -320,7 +358,7 @@ class ChristmasTree {
         const lights = document.querySelectorAll('.light');
         const totalLights = lights.length;
         
-        // 从下往上逐个点亮
+        // Light up from bottom to top
         lights.forEach((light, index) => {
             const delay = (totalLights - index) * 80;
             setTimeout(() => {
@@ -328,20 +366,22 @@ class ChristmasTree {
             }, delay);
         });
         
-        // 点亮完成后
+        // After lighting complete
         setTimeout(() => {
             tree.classList.remove('lighting');
             tree.classList.add('lit');
             btnText.textContent = typeof i18n !== 'undefined' ? i18n.t('btnLightOff') : 'Turn Off Lights';
             
-            // 放烟花庆祝
+            // Celebration fireworks
             if (typeof fireworks !== 'undefined') {
                 fireworks.launch(5);
             }
         }, totalLights * 80 + 500);
     }
     
-    // 打开所有灯
+    /**
+     * Turn on all lights immediately
+     */
     turnOnAllLights() {
         document.querySelectorAll('.light').forEach(light => {
             light.classList.add('on');
@@ -350,14 +390,18 @@ class ChristmasTree {
         btnText.textContent = typeof i18n !== 'undefined' ? i18n.t('btnLightOff') : 'Turn Off Lights';
     }
     
-    // 关闭所有灯
+    /**
+     * Turn off all lights
+     */
     turnOffAllLights() {
         document.querySelectorAll('.light').forEach(light => {
             light.classList.remove('on');
         });
     }
     
-    // 音乐控制
+    /**
+     * Toggle background music playback
+     */
     toggleMusic() {
         const audio = document.getElementById('bgMusic');
         const btn = document.getElementById('musicBtn');
@@ -370,7 +414,7 @@ class ChristmasTree {
             icon.textContent = '🔇';
         } else {
             audio.play().catch(e => {
-                console.log('音频播放需要用户交互:', e);
+                console.log('Audio playback requires user interaction:', e);
             });
             this.isMusicPlaying = true;
             btn.classList.add('playing');
@@ -378,12 +422,16 @@ class ChristmasTree {
         }
     }
     
-    // 保存愿望到本地
+    /**
+     * Save wishes to localStorage
+     */
     saveWishes() {
         localStorage.setItem('christmasWishes', JSON.stringify(this.wishes));
     }
     
-    // 从本地加载愿望
+    /**
+     * Load wishes from localStorage
+     */
     loadWishes() {
         const saved = localStorage.getItem('christmasWishes');
         if (saved) {
@@ -395,7 +443,9 @@ class ChristmasTree {
         }
     }
     
-    // 更新祝福语（现在由 i18n 处理）
+    /**
+     * Update the blessing message (handled by i18n)
+     */
     updateBlessingMessage() {
         if (typeof i18n !== 'undefined') {
             i18n.updateBlessing();
@@ -403,8 +453,7 @@ class ChristmasTree {
     }
 }
 
-// 初始化应用
+// Initialize application on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
     new ChristmasTree();
 });
-

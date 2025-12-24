@@ -1,6 +1,6 @@
 /**
- * 雪花飘落效果
- * 使用 Canvas 绘制雪花粒子
+ * Snow Effect
+ * Canvas-based snowfall particle animation
  */
 
 class SnowEffect {
@@ -13,20 +13,29 @@ class SnowEffect {
         this.init();
         this.animate();
         
-        // 监听窗口大小变化
+        // Handle window resize
         window.addEventListener('resize', () => this.resize());
     }
     
+    /**
+     * Initialize canvas and create snowflakes
+     */
     init() {
         this.resize();
         this.createSnowflakes();
     }
     
+    /**
+     * Resize canvas to match window size
+     */
     resize() {
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
     }
     
+    /**
+     * Create initial set of snowflakes
+     */
     createSnowflakes() {
         this.snowflakes = [];
         for (let i = 0; i < this.maxSnowflakes; i++) {
@@ -34,6 +43,10 @@ class SnowEffect {
         }
     }
     
+    /**
+     * Create a single snowflake with random properties
+     * @returns {Object} Snowflake object
+     */
     createSnowflake() {
         return {
             x: Math.random() * this.canvas.width,
@@ -45,21 +58,24 @@ class SnowEffect {
         };
     }
     
+    /**
+     * Update snowflake positions
+     */
     update() {
         this.snowflakes.forEach(flake => {
             flake.y += flake.speed;
             flake.x += flake.wind;
             
-            // 添加轻微的摆动效果
+            // Add gentle swaying motion
             flake.x += Math.sin(flake.y * 0.01) * 0.3;
             
-            // 如果雪花飘出屏幕，重置到顶部
+            // Reset snowflake if it goes off screen (bottom)
             if (flake.y > this.canvas.height) {
                 flake.y = -10;
                 flake.x = Math.random() * this.canvas.width;
             }
             
-            // 水平边界处理
+            // Wrap around horizontal edges
             if (flake.x > this.canvas.width) {
                 flake.x = 0;
             } else if (flake.x < 0) {
@@ -68,6 +84,9 @@ class SnowEffect {
         });
     }
     
+    /**
+     * Draw all snowflakes on canvas
+     */
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         
@@ -79,6 +98,9 @@ class SnowEffect {
         });
     }
     
+    /**
+     * Animation loop
+     */
     animate() {
         this.update();
         this.draw();
@@ -86,8 +108,7 @@ class SnowEffect {
     }
 }
 
-// 页面加载后初始化雪花效果
+// Initialize snow effect on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
     new SnowEffect();
 });
-
