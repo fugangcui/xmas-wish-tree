@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎄 许愿圣诞树 - Merry Christmas!</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎄</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 雪花画布 -->
+    <canvas id="snowCanvas"></canvas>
+    
+    <!-- 烟花画布 -->
+    <canvas id="fireworksCanvas"></canvas>
+
+    <!-- 主容器 -->
+    <div class="container">
+        <!-- 标题 -->
+        <header class="header">
+            <h1>🎄 Merry Christmas! 🎄</h1>
+            <p class="subtitle">写下你的愿望，挂在圣诞树上</p>
+        </header>
+
+        <!-- 圣诞树区域 -->
+        <div class="tree-section">
+            <!-- 树顶星星 -->
+            <div class="star">★</div>
+            
+            <!-- 圣诞树 -->
+            <div class="tree">
+                <div class="tree-layer tree-layer-1"></div>
+                <div class="tree-layer tree-layer-2"></div>
+                <div class="tree-layer tree-layer-3"></div>
+                <div class="tree-layer tree-layer-4"></div>
+                
+                <!-- 彩灯容器 -->
+                <div class="lights-container" id="lightsContainer"></div>
+                
+                <!-- 装饰球容器（愿望） -->
+                <div class="ornaments-container" id="ornamentsContainer"></div>
+            </div>
+            
+            <!-- 树干 -->
+            <div class="trunk"></div>
+            
+            <!-- 礼物盒 -->
+            <div class="gifts">
+                <div class="gift gift-1">
+                    <div class="gift-ribbon"></div>
+                    <div class="gift-bow"></div>
+                    <div class="gift-bow-center"></div>
+                </div>
+                <div class="gift gift-2">
+                    <div class="gift-ribbon"></div>
+                    <div class="gift-bow"></div>
+                    <div class="gift-bow-center"></div>
+                </div>
+                <div class="gift gift-3">
+                    <div class="gift-ribbon"></div>
+                    <div class="gift-bow"></div>
+                    <div class="gift-bow-center"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 操作按钮 -->
+        <div class="actions">
+            <button class="btn btn-wish" id="wishBtn">
+                <span class="btn-icon">✨</span>
+                <span>许个愿望</span>
+            </button>
+            <button class="btn btn-light" id="lightBtn">
+                <span class="btn-icon">💡</span>
+                <span>点亮圣诞树</span>
+            </button>
+            <button class="btn btn-firework" id="fireworkBtn">
+                <span class="btn-icon">🎆</span>
+                <span>放烟花</span>
+            </button>
+        </div>
+
+        <!-- 音乐控制 -->
+        <div class="music-control">
+            <button class="music-btn" id="musicBtn" title="背景音乐">
+                <span class="music-icon" id="musicIcon">🔇</span>
+                <span class="music-text">音乐</span>
+            </button>
+        </div>
+
+        <!-- 底部祝福语 -->
+        <footer class="footer">
+            <p class="blessing" id="blessing">愿你的每一个愿望都能实现 🌟</p>
+            <p class="copyright">平安夜快乐 · 圣诞节快乐</p>
+        </footer>
+    </div>
+
+    <!-- 许愿弹窗 -->
+    <div class="modal" id="wishModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✨ 写下你的愿望</h2>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <textarea 
+                    class="wish-input" 
+                    id="wishInput" 
+                    placeholder="在这里写下你的圣诞愿望..."
+                    maxlength="100"
+                ></textarea>
+                <div class="char-count"><span id="charCount">0</span>/100</div>
+                
+                <div class="color-picker">
+                    <p>选择装饰球颜色：</p>
+                    <div class="color-options">
+                        <button class="color-option selected" data-color="#e74c3c" style="background: #e74c3c;" title="红色"></button>
+                        <button class="color-option" data-color="#f39c12" style="background: #f39c12;" title="金色"></button>
+                        <button class="color-option" data-color="#3498db" style="background: #3498db;" title="蓝色"></button>
+                        <button class="color-option" data-color="#c0c0c0" style="background: #c0c0c0;" title="银色"></button>
+                        <button class="color-option" data-color="#9b59b6" style="background: #9b59b6;" title="紫色"></button>
+                        <button class="color-option" data-color="#2ecc71" style="background: #2ecc71;" title="绿色"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-submit" id="submitWish">
+                    <span>🎄 挂上圣诞树</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 愿望查看弹窗 -->
+    <div class="wish-tooltip" id="wishTooltip"></div>
+
+    <!-- 背景音乐 -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="we_wish_you_a_merry_christmas.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="snow.js"></script>
+    <script src="fireworks.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
+
